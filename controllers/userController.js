@@ -2,7 +2,8 @@ const User = require('../models/user')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
-const secretKey = process.env.JWT_SECRET_KEY
+require('dotenv').config();
+const secretKey = process.env.JWT_SECRET_KEY  
 
 const registerUser = async (req, res) => {
     const { userName, email, password } = req.body
@@ -36,15 +37,21 @@ const loginUser = async (req, res) => {
 
     try {
         const user = await User.findOne({ email })
-    if (user && bcrypt.compare(password, user.password)) {
-        const token = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, secretKey, { expiresIn: '1h' })
-        res.json({ token })
-    } else {
-        res.status(400).json({ message: "invalid email or password" })
-    }
+        if (!user) {
+            res.status(400).json({ message: "invalid email or password" })
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password)
+        if (!isMatch) {
+            res.status(400).json({ message: 'invalid email or password' })
+        }
+        const token = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, secretKey, { expiresIn: '1hr' })
+         
+        res.json(token)
 
     } catch (error) {
-        res.status(500).json({message:"server error"})
+        console.error('Error during login:', error);
+        res.status(500).json({ message: "server error" })
     }
 
 }

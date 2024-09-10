@@ -34,11 +34,11 @@ const createProduct = async (req, res) => {
             countInStock
         });
 
-        // Await the save operation
+         
         const savedProduct = await product.save();
 
-        // Send the saved product as the response
-        res.status(201).json(savedProduct); // 201 Created status code
+         
+        res.status(201).json(savedProduct); 
 
     } catch (error) {
         res.status(500).json({ message: "Server error" });

@@ -29,8 +29,13 @@ const getOrderById = async (req, res) => {
 
 const getMyOrders = async (req, res) => {
     try {
-        const orders = await Order.find({ user: req.user.id })
+        console.log(req.user.id)
+        const orders = await Order.find({user:req.user.id})
+        if (!orders || orders.length === 0) {
+            return res.status(404).json({ message: "No orders found for this user" });
+        }
         res.json(orders)
+        
     } catch (error) {
         res.status(500).json({ message: "server error" })
     }
@@ -56,6 +61,8 @@ const updateOrder = async (req, res) => {
         }
         order.isDelivered = true
         order.deliveredAt = order.isDelivered ? Date.now() : null;
+        const updatedOrder = await order.save()
+        res.json(updatedOrder)
     } catch (error) {
         res.status(500).json({ message: "server error" })
     }

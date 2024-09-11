@@ -1,14 +1,15 @@
 const express = require('express')
 const router = express.Router()
 const { createOrder, getOrderById, getMyOrders, getAllOrders, updateOrder } = require('../controllers/orderControllers')
-const authenitcateToken = require('../middlewares/authenticationMiddleware')
+const authenticateToken = require('../middlewares/authenticationMiddleware')
 
 
-router.post('/create',authenitcateToken, createOrder)
+router.post('/create',authenticateToken, createOrder)
 
 router.get('/:id',getOrderById)
 
-router.get('/myorder',authenitcateToken,getMyOrders)
+router.get('/',authenticateToken , getMyOrders);
+
 
 router.get('/',getAllOrders)
 

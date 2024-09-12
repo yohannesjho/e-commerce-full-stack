@@ -14,19 +14,6 @@ const createOrder = async (req, res) => {
     }
 }
 
-const getOrderById = async (req, res) => {
-    try {
-        const order = await Order.findById(req.params.id)
-        if (!order) {
-            res.status(400).json({ message: "order not found" })
-        }
-        res.json(order)
-    } catch (error) {
-        console.log("order create error:", error)
-        
-    }
-}
-
 const getMyOrders = async (req, res) => {
     try {
         console.log(req.user.id)
@@ -41,18 +28,19 @@ const getMyOrders = async (req, res) => {
     }
 }
 
-const getAllOrders = async (req, res) => {
+const getOrderById = async (req, res) => {
     try {
-        const orders = await Order.find({})
-        res.json(orders)
+        const order = await Order.findById(req.params.id)
+        if (!order) {
+            res.status(400).json({ message: "order not found" })
+        }
+        res.json(order)
+    } catch (error) {
+        console.log("order create error:", error)
+        
     }
-
-    catch (error) {
-        res.status(500).json({ message: "server error" })
-    }
-
 }
-
+ 
 const updateOrder = async (req, res) => {
     try {
         const order = await Order.findById(req.params.id)
@@ -68,10 +56,23 @@ const updateOrder = async (req, res) => {
     }
 }
 
+const deleteOrder = async (req, res)=>{
+    try {
+        const order = Order.findOneAndDelete(req.params.id)
+        if (!order) {
+            res.json({ message: "order not found" })
+        }
+        res.json({message:"order deleted successfully"})
+    } catch (error) {
+        res.status(500).json({ message: "server error" })
+    }
+}
+
 module.exports = {
+
     createOrder,
     getOrderById,
     getMyOrders,
-    getAllOrders,
     updateOrder,
+    deleteOrder
 }

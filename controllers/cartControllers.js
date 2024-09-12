@@ -1,8 +1,8 @@
 const Cart = require('../models/cart')
 
-//get cart for a user
+//get cart 
 const getCarts = async (req, res) => {
-    
+
     try {
         const cart = await Cart.find({ user: req.user.id })
         if (!cart) {
@@ -10,14 +10,14 @@ const getCarts = async (req, res) => {
         }
         res.json(cart)
     } catch (error) {
-        
+
         res.status(500).json({ message: 'server error' })
     }
 }
 
-//get cart for a user using id
+//get cart for  using id
 const getCart = async (req, res) => {
-   
+
     try {
         const cart = await Cart.findOne({ user: req.user.id, _id: req.params.id })
         if (!cart) {
@@ -29,43 +29,16 @@ const getCart = async (req, res) => {
     }
 }
 
-//get cart for admin
-const getCartsAdmin = async (req, res) => {
-    
-    try {
-        const cart = await Cart.find({})
-        if (!cart) {
-            return res.json({ message: "cart not found" })
-        }
-        res.json(cart)
-    } catch (error) {
-        res.status(500).json({ message: 'server error' })
-    }
-}
-
-//get cart for admin using id
-const getCartAdmin = async (req, res) => {
-    const cart = await Cart.findById(req.params.id)
-    try {
-        if (!cart) {
-            return res.json({ message: "cart not found" })
-        }
-        res.json(cart)
-    } catch (error) {
-        res.status(500).json({ message: 'server error' })
-    }
-}
-
 //create cart
 const createCart = async (req, res) => {
-    
+
     try {
         const { cartItems, totalPrice } = req.body
         const newCart = new Cart({ user: req.user.id, cartItems, totalPrice })
         const savedCart = await newCart.save()
         res.json(savedCart)
     } catch (error) {
-        console.log("create error:",error)
+        console.log("create error:", error)
         res.status(500).json({ message: 'server error' })
     }
 
@@ -97,25 +70,11 @@ const deleteCart = async (req, res) => {
     }
 }
 
-//delete cart for admin
-const deleteCartAdmin = async (req, res) => {
-    try {
-        const cart = await Cart.findOneAndDelete({ _id: req.params.id })
-        if (!cart) {
-            return res.json({ message: "cart not found" })
-        }
-    } catch (error) {
-        res.status(500).json({ message: "server error" })
-    }
-}
 
 module.exports = {
     getCarts,
     getCart,
-    getCartsAdmin,
-    getCartAdmin,
     createCart,
     updatecart,
     deleteCart,
-    deleteCartAdmin,
 }

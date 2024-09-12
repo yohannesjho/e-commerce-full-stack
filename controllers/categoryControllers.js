@@ -1,5 +1,6 @@
 const Category = require('../models/category')
 
+
 const createCategories = async (req, res) => {
     try {
         const { name, description, img } = req.body
@@ -66,19 +67,7 @@ const updateCategory = async (req, res) => {
         res.status(500).json({ message: "server error" })
     }
 }
-const updateCategoryForAdmin = async (req, res) => {
 
-    try {
-        const { name, description, img } = req.body
-        const category = await Category.findOneAndUpdate({ _id: req.params.id },{name,description,img},{ new: true, runValidators: true })
-        if (!category) {
-            return res.status(404).json({ message: "Category not found" });
-        }
-        return res.status(404).json({ message: "Category not found" });
-    } catch (error) {
-        res.status(500).json({ message: "server error" })
-    }
-}
 
 const deleteCategory = async (req, res) => {
     try {
@@ -91,17 +80,7 @@ const deleteCategory = async (req, res) => {
         res.status(500).json({ message: "server error" })
     }
 }
-const deleteCategoryForAdmin = async (req, res) => {
-    try {
-      const category = await Category.findOneAndDelete({_id:req.params.id})
-      if(!category){
-        return res.json({message:"category not found"})
-      }
-      res.json({ message: "Category deleted successfully" });
-    } catch (error) {
-        res.status(500).json({ message: "server error" })
-    }
-}
+
 
 module.exports = {
     createCategories,
@@ -109,7 +88,5 @@ module.exports = {
     getCategoryById,
     getMyCategories,
     updateCategory,
-    updateCategoryForAdmin,
     deleteCategory,
-    deleteCategoryForAdmin
 }

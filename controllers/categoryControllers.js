@@ -17,6 +17,7 @@ const getCategories = async (req, res) => {
         const categories = await Category.find({})
         res.json(categories)
     } catch (error) {
+        console.log('admin error:',error)
         res.status(500).json({ message: "server error" })
     }
 

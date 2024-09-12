@@ -5,6 +5,7 @@ const productRoutes = require('./routes/productRoutes.js')
 const userRoutes = require("./routes/userRoutes.js")
 const orderRoutes = require('./routes/orderRoutes.js')
 const categoryRoutes = require('./routes/categoryRoutes.js')
+const cartRoutes = require('./routes/cartRoutes.js')
  
 
 dotenv.config()
@@ -17,6 +18,7 @@ app.use('/api/products', productRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/orders',orderRoutes)
 app.use('/api/categories',categoryRoutes )
+app.use('/api/carts',cartRoutes)
  
 
 mongoose.connect(process.env.MONGO_URI)

@@ -24,15 +24,17 @@ const getProduct = async (req, res) => {
 };
 const createProduct = async (req, res) => {
     try {
-        const { name, description, price, imgUrl, category, countInStock } = req.body;
+        const { name, description, price, category, countInStock } = req.body;
+        const images = req.files;
         const product = new Product({
             name,
             description,
             price,
-            imgUrl,
             category,
+            imgUrl: images.map(file => file.originalname),
             countInStock
         });
+       
 
          
         const savedProduct = await product.save();

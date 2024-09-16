@@ -1,13 +1,43 @@
-const Category = require('../models/category')
+
+const Category = require('../models/Category');
+ 
+const cloudinary = require('../config/cloudinary')
+  
 
 
 const createCategories = async (req, res) => {
+     
     try {
-        const { name, description, img } = req.body
-        const category = new Category({user:req.user.id, name, description, img })
-        const newCategory = await category.save()
-        res.status(201).json(newCategory)
+        const { name, description } = req.body;
+        const files = req.files;
+
+        // Check if an image file was uploaded
+        if (!files || files.length === 0) {
+            return res.status(400).json({ message: 'No images uploaded' });
+        }
+
+          
+        const imageUrls = [];
+        for (let file of files) {
+            const result = await cloudinary.uploader.upload(file.path, {
+                folder: 'categories'
+            });
+            imageUrls.push(result.secure_url);
+        }
+        
+
+        // Create a new category with the image URL from Cloudinary
+        const category = new Category({
+            name,
+            description,
+            img: imageUrls // Store multiple image URLs
+        });
+
+
+        const savedCategory = await category.save();
+        res.status(201).json(savedCategory);
     } catch (error) {
+        console.log("error:", error)
         res.status(500).json({ message: 'server error' })
     }
 }

@@ -84,7 +84,7 @@ export default function page() {
   };
   return (
     <div>
-      <form className='border-2 rounded-md w-3/4 mx-auto p-8 my-8' onSubmit={handleOnSubmit}>
+      <form className='border-2 rounded-md md:w-3/4 md:mx-auto mx-4 sm:mx-8 p-8 my-8 ' onSubmit={handleOnSubmit}>
         <h2 className='text-2xl mb-2'>Product Information page</h2>
         <p className='text-gray-400 mb-12'>please provide the following information about your product</p>
         <div className='flex space-x-4 mb-6'>
@@ -103,15 +103,15 @@ export default function page() {
           <h2 className="text-gray-400 mb-4">Product description</h2>
           <textarea className='border-2 w-full border-gray-700 rounded-md px-2 py-1 outline-none' type='text' name='description' value={formData.description} onChange={handleInputChange} required />
         </div>
-        <div className='flex justify-between mb-6'>
+        <div className='flex space-x-4 mb-6'>
           <div>
-            <h2 className="text-gray-400 mb-4">Product Price</h2>
-            <input className='border-2 border-gray-700 rounded-md px-2 py-1 outline-none' type='number' name='price' value={formData.price} onChange={handleInputChange} required />
+            <h2 className="text-gray-400  ">Product Price</h2>
+            <input className='border-2 w-full border-gray-700 rounded-md px-2 py-1 outline-none' type='number' name='price' value={formData.price} onChange={handleInputChange} required />
           </div>
 
           <div>
-            <h2 className="text-gray-400 mb-4">count in stock</h2>
-            <input className='border-2 border-gray-700 rounded-md px-2 py-1 outline-none' type='number' name='countInStock' value={formData.countInStock} onChange={handleInputChange} required />
+            <h2 className="text-gray-400  ">count in stock</h2>
+            <input className='border-2 w-full border-gray-700 rounded-md px-2 py-1 outline-none' type='number' name='countInStock' value={formData.countInStock} onChange={handleInputChange} required />
           </div>
         </div>
 

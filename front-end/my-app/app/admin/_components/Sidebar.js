@@ -49,12 +49,12 @@ export default function sidebar() {
                     {isCategoryDropdownOpen && (
                         <ul className="pl-16 text-sm mt-2">
                             <li className="mb-2">
-                                <Link href="/admin/products">
+                                <Link href="/admin/categories">
                                      Category List
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/admin/products/add">
+                                <Link href="/admin/categories/add">
                                    Add Category
                                 </Link>
                             </li>

@@ -22,12 +22,16 @@ export default function page() {
     }, [searchParams]);
 
     const handleInputChange = (e) => {
+         
         const { name, value } = e.target;
+        
         setCategoryData({ ...categoryData, [name]: value });
     };
 
     const handleFileChange = (e) => {
+      
         const files = Array.from(e.target.files);
+         
         setCategoryData({ ...categoryData, img: files });
     };
 
@@ -38,25 +42,26 @@ export default function page() {
             data.append('id', categoryData.id);
             data.append('name', categoryData.name);
             data.append('description', categoryData.description);
+           
 
             // Append each image file
             categoryData.img.forEach((file) => {
                 data.append('images', file);
             });
-
+           
             // Make the API call to update the category
             const response = await axios.put(`http://localhost:5000/api/user/categories/update/${categoryData.id}`, data, {
                 headers: {
                     "Content-Type": "multipart/form-data"
                 }
             });
-
+            console.log(response)
             if (response.data) {
                 setSuccess("Category edited successfully!");
             }
         } catch (error) {
             console.log(error);
-            setError(`${error}`);
+            setError(`something went wrong`);
         }
     };
 

@@ -2,6 +2,7 @@
 const Category = require('../models/Category');
 
 const cloudinary = require('../config/cloudinary')
+const fs = require('fs')
 
 
 
@@ -23,6 +24,13 @@ const createCategories = async (req, res) => {
                 folder: 'categories'
             });
             imageUrls.push(result.secure_url);
+            fs.unlink(file.path, (err) => {
+                if (err) {
+                    console.error("Failed to delete local file:", err);
+                } else {
+                    console.log("Successfully deleted local file:", file.path);
+                }
+            });
         }
 
 
@@ -35,6 +43,8 @@ const createCategories = async (req, res) => {
 
 
         const savedCategory = await category.save();
+
+       
         res.status(201).json(savedCategory);
     } catch (error) {
         console.log("error:", error)
@@ -79,6 +89,7 @@ const getMyCategories = async (req, res) => {
 const updateCategory = async (req, res) => {
 
     try {
+       
         const { name, description } = req.body
         const files = req.files
         const category = await Category.findOne({ _id: req.params.id })
@@ -95,7 +106,15 @@ const updateCategory = async (req, res) => {
                 const result = await cloudinary.uploader.upload(file.path, {
                     folder: 'categories'
                 });
+                 
                 imageUrls.push(result.secure_url);
+                fs.unlink(file.path, (err) => {
+                    if (err) {
+                        console.error("Failed to delete local file:", err);
+                    } else {
+                        console.log("Successfully deleted local file:", file.path);
+                    }
+                });
             }
             category.img = imageUrls;
         }

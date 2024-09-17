@@ -8,7 +8,7 @@ router.post('/create',upload.array('images'),createCategories)
 router.get('/',getCategories)
 router.get('/:id',getCategoryById)
 router.get('/my',authenticateToken,getMyCategories)
-router.put('/update/:id',authenticateToken,updateCategory)
+router.put('/update/:id',upload.array('images'),updateCategory)
 router.delete('/delete/:id',authenticateToken,deleteCategory)
  
 

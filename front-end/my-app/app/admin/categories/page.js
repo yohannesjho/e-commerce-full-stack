@@ -19,13 +19,7 @@ export default function CategoryList() {
     fetchCategories()
     },[])
 
-    const editCategory = async ()=>{
-         try {
-            
-         } catch (error) {
-            
-         }
-    }
+    
     return (
         <div>
             <table className='border w-full text-left m-8'>
@@ -51,7 +45,7 @@ export default function CategoryList() {
                                 id:category._id,
                                 name:category.name,
                                 description: category.description,
-                                img: category.img[0]
+                                img: category.img
                             }
                         }} className='bg-yellow-500 px-2 py-1 rounded-md mr-4 '>Edit</Link><Link href="admin/categories/edit" className='bg-red-500 px-2 py-1 rounded-md'>Delete</Link></td>
                     </tr>

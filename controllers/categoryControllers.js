@@ -1,12 +1,12 @@
 
 const Category = require('../models/Category');
- 
+
 const cloudinary = require('../config/cloudinary')
-  
+
 
 
 const createCategories = async (req, res) => {
-     
+
     try {
         const { name, description } = req.body;
         const files = req.files;
@@ -16,7 +16,7 @@ const createCategories = async (req, res) => {
             return res.status(400).json({ message: 'No images uploaded' });
         }
 
-          
+
         const imageUrls = [];
         for (let file of files) {
             const result = await cloudinary.uploader.upload(file.path, {
@@ -24,7 +24,7 @@ const createCategories = async (req, res) => {
             });
             imageUrls.push(result.secure_url);
         }
-        
+
 
         // Create a new category with the image URL from Cloudinary
         const category = new Category({
@@ -48,7 +48,7 @@ const getCategories = async (req, res) => {
         const categories = await Category.find({})
         res.json(categories)
     } catch (error) {
-        console.log('admin error:',error)
+        console.log('admin error:', error)
         res.status(500).json({ message: "server error" })
     }
 
@@ -79,18 +79,30 @@ const getMyCategories = async (req, res) => {
 const updateCategory = async (req, res) => {
 
     try {
-        const { name, description, img } = req.body
-        const category = await Category.findOne({ _id: req.params.id, user: req.user.id })
+        const { name, description } = req.body
+        const files = req.files
+        const category = await Category.findOne({ _id: req.params.id })
         if (!category) {
             return res.status(404).json({ message: "Category not found" });
         }
 
+
         category.name = name;
         category.description = description;
-        category.img = img;
+        if (files) {
+            const imageUrls = [];
+            for (let file of files) {
+                const result = await cloudinary.uploader.upload(file.path, {
+                    folder: 'categories'
+                });
+                imageUrls.push(result.secure_url);
+            }
+            category.img = imageUrls;
+        }
 
-        const updatedCategory= await category.save()
-       
+
+        const updatedCategory = await category.save()
+
 
         res.json(updatedCategory)
     } catch (error) {
@@ -101,11 +113,11 @@ const updateCategory = async (req, res) => {
 
 const deleteCategory = async (req, res) => {
     try {
-      const category = await Category.findOneAndDelete({_id:req.params.id, user:req.user.id})
-      if(!category){
-        return res.json({message:"category not found"})
-      }
-      res.json({ message: "Category deleted successfully" });
+        const category = await Category.findOneAndDelete({ _id: req.params.id, user: req.user.id })
+        if (!category) {
+            return res.json({ message: "category not found" })
+        }
+        res.json({ message: "Category deleted successfully" });
     } catch (error) {
         res.status(500).json({ message: "server error" })
     }

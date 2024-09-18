@@ -4,6 +4,57 @@ const Order = require('../models/order')
 const Payment = require('../models/payment')
 const Product = require('../models/product')
 const User = require('../models/user')
+const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
+
+
+//admin signup
+const adminSignUp = async (req, res)=>{
+    const {userName, email, password} = req.body
+
+    try {
+        const userExist = await User.findOne({email})
+        if(userExist) {
+            return res.status(400).json({message:'email is existed'})
+        }
+       if(password.length < 6){
+        res.status(400).json({ message: 'the length of the password is less than 6' })
+       }
+        const hashedPassword = await bcrypt.hash(password,10)
+        const newAdmin = new User({
+            userName,
+            email,
+            password:hashedPassword,
+            isAdmin:true
+        })
+        const savedAdmin = await newAdmin.save()
+        res.status(201).json(savedAdmin)
+         
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: "server error" })
+    }
+}
+const adminSignIn = async (req, res)=>{
+    const { email, password} = req.body
+
+    try {
+        const admin = await User.findOne({email})
+        if(!admin){
+            return res.status(400).json({message:"invalid credentials"})
+        }
+       const isMatch = await bcrypt.compare(password, admin.password)
+       if(!isMatch){
+        return res.status(400).json({message:"invalid credientials"})
+       }
+        const token = jwt.sign({id:admin._id, isAdmin:true}, process.env.JWT_SECRET_KEY,{expiresIn:'1hr'})
+        
+        res.status(200).json(token)
+         
+    } catch (error) {
+        res.status(500).json({ message: "server error" })
+    }
+}
 
 //user management
 //create user
@@ -24,7 +75,8 @@ const registerUser = async (req, res) => {
         const user = new User({
             userName,
             email,
-            password: hashedPassword
+            password: hashedPassword,
+            
         })
 
         const savedUser = await user.save()
@@ -321,6 +373,8 @@ const deletePayments = async (req, res) => {
 
 
 module.exports = {
+    adminSignUp,
+    adminSignIn,
     registerUser,
     getAllUsers,
     updateUser,

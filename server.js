@@ -24,7 +24,7 @@ app.use('/api/user/orders',orderRoutes)
 app.use('/api/user/categories',categoryRoutes )
 app.use('/api/user/carts',cartRoutes)
 app.use('/api/user/payments',paymentRoutes)
-app.use('api/admin',adminRoutes)
+app.use('/api/admin',adminRoutes)
  
 
 mongoose.connect(process.env.MONGO_URI)

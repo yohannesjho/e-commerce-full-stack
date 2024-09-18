@@ -89,7 +89,7 @@ const getMyCategories = async (req, res) => {
 const updateCategory = async (req, res) => {
 
     try {
-       
+         console.log(req)
         const { name, description } = req.body
         const files = req.files
         const category = await Category.findOne({ _id: req.params.id })

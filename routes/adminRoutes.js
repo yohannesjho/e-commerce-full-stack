@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const  {
+    adminSignUp,
+    adminSignIn,
     registerUser,
     getAllUsers,
     updateUser,
@@ -22,7 +24,10 @@ const  {
     getPayments,
     deletePayments
 } = require('../controllers/adminControllers')
+const authenticateAdmin = require('../middlewares/authenticateAdmin')
 
+router.post('/signup',adminSignUp)
+router.post('/signin',adminSignIn)
 router.post('/register',registerUser)
 router.get('/users',getAllUsers)
 router.put('/user',updateUser)
@@ -33,7 +38,7 @@ router.delete('/product',deleteProduct)
 router.post('/category',createCategories)
 router.get('/categories',getCategories)
 router.get('/category',getCategoryById)
-router.put('/category',updateCategory)
+router.put('/category',authenticateAdmin,updateCategory)
 router.delete('/category',deleteCategory)
 router.get('/orders',getAllOrders)
 router.get('/order',getOrderById)

@@ -36,6 +36,7 @@ const loginUser = async (req, res) => {
     const { email, password } = req.body
 
     try {
+        console.log(req.header)
         const user = await User.findOne({ email })
         if (!user) {
             res.status(400).json({ message: "invalid email or password" })

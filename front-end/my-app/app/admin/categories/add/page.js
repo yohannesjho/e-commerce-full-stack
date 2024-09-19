@@ -41,13 +41,17 @@ export default function page() {
       });
       
       console.log(data)
+      const token = localStorage.getItem('')
 
       // Make API request to the backend
       const response = await axios.post('http://localhost:5000/api/user/categories/create', data, {
         headers: {
           'Content-Type': 'multipart/form-data',
-
+          'Authorization':`Bearer ${token}`
         },
+        headers:{
+          'Authorization':`Bearer ${token}`
+        }
       });
 
       if (response.data) {

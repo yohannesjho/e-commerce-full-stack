@@ -14,7 +14,7 @@ router.get('/',getProducts)
 router.get('/:id',getProduct )
 
 //create a new product
-router.post('/new',upload.array('imgUrl', 5),createProduct)
+router.post('/new',upload.array('imgUrls'),createProduct)
 
 router.put('/:id',updateProduct)
 

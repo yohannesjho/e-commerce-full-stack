@@ -72,7 +72,7 @@ export default function sidebar() {
                     {isOrderDropdownOpen && (
                         <ul className="pl-16 text-sm mt-2 ">
                             <li className="mb-2">
-                                <Link href="/admin/products">
+                                <Link href="/admin/order">
                                      Order List
                                 </Link>
                             </li>

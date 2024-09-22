@@ -8,9 +8,10 @@ export default function CategoryList() {
     useEffect(() => {
         const fetchCategories = async () => {
             const token = localStorage.getItem('authToken')
+            console.log(token)
             if (token) {
                 try {
-                    const response = await fetch('http://localhost:5000/api/user/categories/', {
+                    const response = await fetch('http://localhost:5000/api/admin/categories/', {
                         method: 'GET',
                         headers: {
                           'Authorization': `Bearer ${token}`   
@@ -29,7 +30,20 @@ export default function CategoryList() {
         fetchCategories()
     }, [])
 
-
+    const handleDelete = async (id) => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/admin/category/${id}`, {
+                method: 'DELETE'
+            });
+            if (!response.ok) {
+                throw new Error('Failed to delete the order');
+            }
+            console.log('Order deleted:', response);
+            setCategories(categories.filter(category => category._id !== id));
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
     return (
         <div>
             <table className='border w-full text-left m-8'>
@@ -57,7 +71,7 @@ export default function CategoryList() {
                                     description: category.description,
                                     img: category.img
                                 }
-                            }} className='bg-yellow-500 px-2 py-1 rounded-md mr-4 '>Edit</Link><Link href="admin/categories/edit" className='bg-red-500 px-2 py-1 rounded-md'>Delete</Link></td>
+                            }} className='bg-yellow-500 px-2 py-1 rounded-md mr-4 '>Edit</Link><button onClick={()=>handleDelete(category._id)} className='bg-red-500 px-2 py-1 rounded-md text-white hover:bg-red-300 duration-300'>Delete</button></td>
                         </tr>
                     ))}
                 </tbody>

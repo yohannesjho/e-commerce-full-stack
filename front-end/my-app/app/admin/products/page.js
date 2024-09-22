@@ -9,6 +9,7 @@ export default function page() {
   useEffect(() => {
     const fetchProducts = async () => {
       const token = localStorage.getItem('authToken')
+     
       if (token) {
         try {
           const response = await fetch('http://localhost:5000/api/user/products', {
@@ -22,6 +23,7 @@ export default function page() {
           }
           const data = await response.json();
           setProducts(data);
+          console.log('hello',products)
         } catch (error) {
           console.error('Error fetching products:', error);
         }
@@ -31,6 +33,21 @@ export default function page() {
 
     fetchProducts();
   }, []);
+
+  const handleDelete = async (id) => {
+    try {
+        const response = await fetch(`http://localhost:5000/api/admin/product/${id}`, {
+            method: 'DELETE'
+        });
+        if (!response.ok) {
+            throw new Error('Failed to delete the order');
+        }
+        
+        setProducts(products.filter(product => product._id !== id));
+    } catch (error) {
+        console.error('Error:', error);
+    }
+};
   return (
     <div className="p-4">
       <div className='bg-gray-800 text-white'>
@@ -61,7 +78,7 @@ export default function page() {
               <td>{product.category}</td>
               <td>{product.price}</td>
               <td>{product.countInStock}</td>
-              <td><button className='bg-yellow-500 px-2 py-1 rounded-md mr-4 '>Edit</button><button className='bg-red-500 px-2 py-1 rounded-md'>Delete</button></td>
+              <td><button className='bg-yellow-500 px-2 py-1 rounded-md text-white hover:bg-yellow-300 duration-300 mr-4 '>Edit</button><button onClick={()=>handleDelete(product._id)} className='bg-red-500 px-2 py-1 rounded-md hover:bg-red-300 text-white duration-300'>Delete</button></td>
             </tr>
           ))}
         </tbody>

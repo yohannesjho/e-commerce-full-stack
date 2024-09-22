@@ -1,8 +1,13 @@
 const jwt = require('jsonwebtoken');
 
 const authenticateAdmin = (req, res, next) => {
-  const token = req.header('Authorization').split(' ')[1];
+  const authHeader = req.header('Authorization');
 
+  if (!authHeader) {
+    return res.status(401).json({ message: 'Authorization header is missing' });
+  }
+
+  const token = authHeader.split(' ')[1];
   if (!token) {
     return res.status(401).json({ message: 'Access denied' });
   }

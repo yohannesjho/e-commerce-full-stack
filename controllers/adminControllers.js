@@ -103,6 +103,7 @@ const getAllUsers = async (req, res) => {
         }
         res.json(user)
     } catch (error) {
+        console.log('error', error)
         res.status(500).json({ message: "server error" })
     }
 }
@@ -134,7 +135,7 @@ const deleteUser = async (req, res) => {
         if (!deletedUser) {
             res.json({ message: 'user not found' })
         }
-        res.json(deletedUser)
+        res.json({message:'user deleted successfully!'})
     } catch (error) {
         res.status(500).json({ message: 'server error' })
     }

@@ -123,7 +123,7 @@ export default function sidebar() {
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/admin/products/add">
+                                <Link href="/admin/user/new">
                                    Add User
                                 </Link>
                             </li>

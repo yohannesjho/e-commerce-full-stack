@@ -29,10 +29,10 @@ const upload = require('../middlewares/upload');
 
 router.post('/signup',adminSignUp)
 router.post('/signin',adminSignIn)
-router.post('/register',authenticateAdmin,registerUser)
-router.get('/users',authenticateAdmin,getAllUsers)
+router.post('/register',registerUser)
+router.get('/users', getAllUsers)
 router.put('/user',authenticateAdmin,updateUser)
-router.delete('/user',authenticateAdmin,deleteUser)
+router.delete('/user/:id' ,deleteUser)
 router.post('/new',authenticateAdmin,upload.array('imgUrls'),createProduct)
 router.put('/product',authenticateAdmin,updateProduct)
 router.delete('/product/:id', deleteProduct)

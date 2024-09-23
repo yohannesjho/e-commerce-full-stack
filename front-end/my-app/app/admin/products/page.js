@@ -78,7 +78,16 @@ export default function page() {
               <td>{product.category}</td>
               <td>{product.price}</td>
               <td>{product.countInStock}</td>
-              <td><button className='bg-yellow-500 px-2 py-1 rounded-md text-white hover:bg-yellow-300 duration-300 mr-4 '>Edit</button><button onClick={()=>handleDelete(product._id)} className='bg-red-500 px-2 py-1 rounded-md hover:bg-red-300 text-white duration-300'>Delete</button></td>
+              <td><Link href={{
+                pathname:'/admin/products/edit',
+                query:{
+                  name:product.name,
+                  category:product.category,
+                  description:product.description,
+                  price:product.price,
+                  countInStock:product.countInStock
+                }
+              }} className='bg-yellow-500 px-2 py-1 rounded-md text-white hover:bg-yellow-300 duration-300 mr-4 '>Edit</Link><button onClick={()=>handleDelete(product._id)} className='bg-red-500 px-2 py-1 rounded-md hover:bg-red-300 text-white duration-300'>Delete</button></td>
             </tr>
           ))}
         </tbody>

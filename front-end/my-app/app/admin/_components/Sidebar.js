@@ -77,36 +77,14 @@ export default function sidebar() {
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/admin/products/add">
+                                <Link href="">
                                    Add Order
                                 </Link>
                             </li>
                         </ul>
                     )}
                 </li>
-                <li className='mb-4'>
-                    <button
-                        onClick={() => setIsCartDropdownOpen(!isCartDropdownOpen)}
-                        className="flex justify-between w-full py-2 px-4 hover:bg-gray-700"
-                    >
-                        <div className='flex gap-2'><ShoppingCartIcon /> <p>Carts</p></div>
-                        <span>{isCartDropdownOpen ? '▲' : '▼'}</span>
-                    </button>
-                    {isCartDropdownOpen && (
-                        <ul className="pl-16 text-sm mt-2 ">
-                            <li className="mb-2">
-                                <Link href="/admin/products">
-                                     Cart List
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="/admin/products/add">
-                                   Add Cart
-                                </Link>
-                            </li>
-                        </ul>
-                    )}
-                </li>
+                 
                 <li className='mb-4'>
                     <button
                         onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
@@ -118,7 +96,7 @@ export default function sidebar() {
                     {isUserDropdownOpen && (
                         <ul className="pl-16 text-sm mt-2 ">
                             <li className="mb-2">
-                                <Link href="/admin/products">
+                                <Link href="/admin/user">
                                      User List
                                 </Link>
                             </li>

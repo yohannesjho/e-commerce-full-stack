@@ -9,22 +9,26 @@ export default function page() {
   useEffect(() => {
     const fetchProducts = async () => {
       const token = localStorage.getItem('authToken')
+      console.log(token)
      
       if (token) {
         try {
-          const response = await fetch('http://localhost:5000/api/user/products', {
-            header: {
+          console.log("Token before fetch:", token);
+
+          const response = await fetch('http://localhost:5000/api/admin/products', {
+            headers: { 
               'Authorization': `Bearer ${token}`
             }
           });
-          console.log(response)
+         
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
           }
           const data = await response.json();
           setProducts(data);
-          console.log('hello',products)
+           
         } catch (error) {
+          console.log(error)
           console.error('Error fetching products:', error);
         }
       }
@@ -72,8 +76,8 @@ export default function page() {
 
         </thead>
         <tbody>
-          {products.map(product => (
-            <tr>
+          {products.map((product,index) => (
+            <tr key={index}>
               <td>{product.name}</td>
               <td>{product.category}</td>
               <td>{product.price}</td>

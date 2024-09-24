@@ -49,9 +49,8 @@ const adminSignIn = async (req, res) => {
         if (!isMatch) {
             return res.status(400).json({ message: "invalid credientials" })
         }
-        const token = jwt.sign({ id: admin._id, isAdmin: true }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' })
-
-        res.status(200).json(token)
+        const token = jwt.sign({ id: admin._id, isAdmin: true }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
+        res.status(200).json({token})
 
     } catch (error) {
         res.status(500).json({ message: "server error" })
@@ -181,6 +180,19 @@ const createProduct = async (req, res) => {
         res.status(500).json({ message: "Server error" });
     }
 };
+
+//get all products
+const getAllProducts = async (req, res) => {
+    try {
+        const products = await Product.find({})
+        res.json(products)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: "server error" })
+
+    }
+
+}
 
 //update product
 const updateProduct = async (req, res) => {
@@ -428,6 +440,7 @@ module.exports = {
     updateUser,
     deleteUser,
     createProduct,
+    getAllProducts,
     updateProduct,
     deleteProduct,
     createCategories,

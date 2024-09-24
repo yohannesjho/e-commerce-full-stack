@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken');
 const authenticateAdmin = (req, res, next) => {
   const authHeader = req.header('Authorization');
 
+  console.log('Authorization header:', authHeader);
+
   if (!authHeader) {
     return res.status(401).json({ message: 'Authorization header is missing' });
   }
@@ -13,13 +15,14 @@ const authenticateAdmin = (req, res, next) => {
   }
 
   try {
-    const verified = jwt.verify(token, process.env.JWT_SECRET);
+    const verified = jwt.verify(token, process.env.JWT_SECRET_KEY);
     if (verified.isAdmin !== true) {
       return res.status(403).json({ message: 'You are not authorized' });
     }
     req.admin = verified;
     next();
   } catch (error) {
+    console.log(error)
     res.status(400).json({ message: 'Invalid token' });
   }
 };

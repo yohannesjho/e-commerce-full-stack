@@ -81,6 +81,7 @@ export default function page() {
               <td><Link href={{
                 pathname:'/admin/products/edit',
                 query:{
+                  id:product._id,
                   name:product.name,
                   category:product.category,
                   description:product.description,

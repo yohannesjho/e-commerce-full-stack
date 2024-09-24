@@ -5,24 +5,29 @@ import { useSearchParams } from 'next/navigation'
 export default function Edit() {
   const searchParams = useSearchParams();
   const [product,setProduct] = useState({
+    id:'',
     name:'',
     category:'',
     description:'',
     price:0,
-    countInStock:0
+    countInStock:0,
+    imgUrls:[{}]
+
   })
+  const [success,setSuccess]= useState('')
+  const [error,setError]= useState('')
 
   useEffect(()=>{
+       const id = searchParams.get('id')
        const name = searchParams.get('name')
        const category = searchParams.get('category')
        const description = searchParams.get('description')
-       const price = searchParams.get('price')
-       const countInStock = searchParams.get('countInStock')
+       const price = parseFloat(searchParams.get('price'));
+       const countInStock = parseInt(searchParams.get('countInStock'));
        console.log(name)
-       if(name,category,description,price,countInStock){
-
-         setProduct({name,category,description,price,countInStock})
-       }
+       if (name && category && description && price && countInStock) {
+        setProduct({ name, category, description, price, countInStock, id });
+      }
 
        
 
@@ -30,14 +35,49 @@ export default function Edit() {
 
   const handleInputChange = (e)=>{
  const {name,value} = e.target
+ setProduct({...product,[name]:value})
+ 
   }
 
-  const handleFileInputChange = ()=>{
+  const handleFileInputChange = (e)=>{
+    const files = Array.from(e.target.files)
+    setProduct({...product, imgUrls:files})
+    console.log(product.imgUrls)
     
+  }
+
+  const handleSubmission = async (e)=>{
+    e.preventDefault()
+    const formData = new FormData();
+    formData.append('id', product.id);
+    formData.append('name', product.name);
+    formData.append('category', product.category);
+    formData.append('description', product.description);
+    formData.append('price', product.price);
+    formData.append('countInStock', product.countInStock);
+
+    product.imgUrls.forEach((file, index) => {
+      formData.append('imgUrls',file);
+    });
+    try {
+      const response = await fetch(`http://localhost:5000/api/admin/product/${product.id}`, {
+        method: 'PUT',
+        body: formData
+      });
+      if(response.ok){
+        const data = await response.json();
+      console.log(data);
+      setSuccess('Product updated successfully');
+      }
+    } catch (error) {
+      console.log(error);
+      setError(`${error}`);
+    }
   }
   return (
     <div>
-      <form className='border-2 rounded-md md:w-3/4 md:mx-auto mx-4 sm:mx-8 p-8 my-8 '  >
+      {success?<p className='text-green-500'>{success}</p>:<p className='text-red-500'>{error}</p>}
+      <form onSubmit={handleSubmission} className='border-2 rounded-md md:w-3/4 md:mx-auto mx-4 sm:mx-8 p-8 my-8 '  >
         <h2 className='text-2xl mb-2'>Product Edition page</h2>
         <p className='text-gray-400 mb-12'>please Edit the following information about your product</p>
         <div className='flex space-x-4 mb-6'>

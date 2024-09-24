@@ -185,12 +185,35 @@ const createProduct = async (req, res) => {
 //update product
 const updateProduct = async (req, res) => {
     try {
-        const updatedProduct = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        const {name,category,description,price,countInStock}=req.body
+        const files = req.files
+
+
+        if(files){
+
+            const imageUrls = [];
+            for (let file of files) {
+                const result = await cloudinary.uploader.upload(file.path, {
+                    folder: 'product_edit'
+                });
+                imageUrls.push(result.secure_url);
+                fs.unlink(file.path, (err) => {
+                    if (err) {
+                        console.error("Failed to delete local file:", err);
+                    } else {
+                        console.log("Successfully deleted local file:", file.path);
+                    }
+                });
+            }
+        }
+
+        const updatedProduct = await Product.findByIdAndUpdate(req.params.id, {name,category,description,price,countInStock} );
         if (!updatedProduct) {
             return res.status(404).json({ message: "Product not found" });
         }
         res.json(updatedProduct);
     } catch (error) {
+        console.log(error)
         res.status(500).json({ message: 'Server error' });
     }
 };

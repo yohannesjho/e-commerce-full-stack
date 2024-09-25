@@ -10,7 +10,7 @@ router.post('/register',registerUser)
 router.post('/login' ,loginUser)
 
 //get user profile
-router.get('/profile/:id',getProfile)
+router.get('/profile',authenitcateToken,getProfile)
 
 //update user profile
 router.put('/profile/:id',updateProfile)

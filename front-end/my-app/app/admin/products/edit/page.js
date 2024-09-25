@@ -59,6 +59,7 @@ export default function Edit() {
     product.imgUrls.forEach((file, index) => {
       formData.append('imgUrls',file);
     });
+    console.log(formData)
     try {
       const response = await fetch(`http://localhost:5000/api/admin/product/${product.id}`, {
         method: 'PUT',

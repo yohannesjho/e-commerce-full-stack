@@ -93,7 +93,7 @@ const getProfile = async (req, res) => {
 
 const updateProfile = async (req, res) => {
     const { userName, email, shippingAddress } = req.body
-    console.log(req.user.id)
+    
     try {
         const updatedProfile = await User.findByIdAndUpdate(req.user.id, {
             userName,

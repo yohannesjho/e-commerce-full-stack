@@ -36,7 +36,7 @@ export default function Orders() {
           <div key={order.id} className="bg-white p-4 shadow-md mb-4">
             <p><span className='mx-2 font-bold text-lg'>Order ID:</span> {order._id}</p>
             <p><span className='mx-2 font-bold text-lg'>Order Items:</span> {order.orderItems.map(item => (
-              <div>
+              <div className='ml-28'>
                 <p><span className='mx-2 font-bold text-lg'>Order Name</span>{item.name}</p>
                 <p><span className='mx-2 font-bold text-lg'>Price</span>{item.price}</p>
               </div>))}</p>

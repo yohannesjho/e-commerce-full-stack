@@ -13,6 +13,6 @@ router.post('/login' ,loginUser)
 router.get('/profile',authenitcateToken,getProfile)
 
 //update user profile
-router.put('/profile/:id',updateProfile)
+router.put('/profile',updateProfile)
 
 module.exports = router

@@ -93,14 +93,17 @@ const getProfile = async (req, res) => {
 
 const updateProfile = async (req, res) => {
     const { userName, email, shippingAddress } = req.body
+    console.log(req.user.id)
     try {
-        const updatedProfile = await User.findByIdAndUpdate(req.params.id, {
+        const updatedProfile = await User.findByIdAndUpdate(req.user.id, {
             userName,
             email,
             shippingAddress
-        })
-        res.json(updatedProfile)
+        },
+        { new: true })
+        return res.json(updatedProfile)
     } catch (error) {
+        console.log(error)
         res.status(500).json({ message: 'server error' })
     }
 }

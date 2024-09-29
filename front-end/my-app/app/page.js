@@ -49,7 +49,7 @@ export default function Home() {
       <div className="grid grid-cols-3 gap-4">
         {products.map((product) => (
           <div key={product._id} className="bg-white p-4 shadow-md">
-            <Image src='/images/logo.jpg' width={300} height={50} />
+            <Image src='/images/logo.jpg' width={300} height={50} alt="product image"/>
             <h2 className="font-bold">{product.name}</h2>
             <p>${product.price}</p>
             <p>Category: {product.category}</p>

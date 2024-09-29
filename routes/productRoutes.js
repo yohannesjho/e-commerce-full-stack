@@ -11,7 +11,7 @@ const upload = multer({ storage });
 router.get('/',getProducts)
 
 //get a specific product 
-router.get('/:id',getProduct )
+router.get('/:id',getProduct)
 
 //create a new product
 router.post('/new',upload.array('imgUrls'),createProduct)

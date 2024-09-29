@@ -10,6 +10,7 @@ export default function page() {
     price: '',
     imgUrls: [],
     category: '',
+    brand:'',
     countInStock: '',
   })
   const [success, setSuccess] = useState("");
@@ -83,6 +84,10 @@ export default function page() {
           <div className='w-1/2 space-y-4'>
             <h2 className="text-gray-400">Category</h2>
             <input className='border-2  w-full border-gray-700 rounded-md px-2 py-1 outline-none' type='text' name='category' value={formData.category} onChange={handleInputChange} required />
+          </div>
+          <div className='w-1/2 space-y-4'>
+            <h2 className="text-gray-400">Brand</h2>
+            <input className='border-2  w-full border-gray-700 rounded-md px-2 py-1 outline-none' type='text' name='brand' value={formData.brand} onChange={handleInputChange} required />
           </div>
 
         </div>

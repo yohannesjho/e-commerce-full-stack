@@ -16,7 +16,7 @@ export default function ProductList() {
   }, []);
 
   return (
-    <div>
+    <div className='px-8'>
       <h1 className="text-2xl font-bold">Products</h1>
       <div className="grid grid-cols-3 gap-4">
         {products.map((product) => (

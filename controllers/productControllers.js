@@ -2,7 +2,15 @@ const Product = require('../models/product')
 
 const getProducts = async (req, res) => {
     try {
-        const products = await Product.find({})
+        const {category,brand}=req.query
+        filter = {}
+        if(category){
+            filter.category = category
+        }
+        if(brand){
+            filter.brand = brand
+        }
+        const products = await Product.find(filter)
         res.json(products)
     } catch (error) {
         console.log(error)

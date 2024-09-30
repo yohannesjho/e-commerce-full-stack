@@ -1,5 +1,6 @@
 'use client'
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Home() {
@@ -48,13 +49,13 @@ export default function Home() {
       {/* Display Products */}
       <div className="grid grid-cols-3 gap-4">
         {products.map((product) => (
-          <div key={product._id} className="bg-white p-4 shadow-md">
-            <Image src='/images/logo.jpg' width={300} height={50} alt="product image"/>
+          <Link href={`/customer/products/${product._id}`} key={product._id} className="bg-white p-4 shadow-md">
+            <Image src='/images/logo.jpg' width={300} height={50} alt="product image" />
             <h2 className="font-bold">{product.name}</h2>
             <p>${product.price}</p>
             <p>Category: {product.category}</p>
             <p>Brand: {product.brand}</p>
-          </div>
+          </Link>
         ))}
       </div>
 

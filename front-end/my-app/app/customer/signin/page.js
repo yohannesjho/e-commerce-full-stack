@@ -30,6 +30,19 @@ export default function SignIn() {
                 const token = data.token
                 console.log(token)
                 localStorage.setItem("userAuthToken", token);
+
+                 // Decode token to get expiration time
+                 const decodedToken = jwt_decode(token);
+                 const expirationTime = decodedToken.exp * 1000; // Convert to milliseconds
+                 const currentTime = Date.now();
+
+                  // Set a timeout to log out the user when the token expires
+                const timeoutDuration = expirationTime - currentTime;
+                if (timeoutDuration > 0) {
+                    setTimeout(() => {
+                        handleLogout();
+                    }, timeoutDuration);
+                }
                 
                 setSuccess('You signed in successfully!');
                 router.push('/customer/dashboard');
@@ -42,6 +55,16 @@ export default function SignIn() {
             setSuccess('');
         }
     }
+    const handleLogout = () => {
+        localStorage.removeItem("userAuthToken"); // Remove token from local storage
+        router.push('/'); // Redirect to home or login page
+    }
+
+    useEffect(() => {
+        // Clean up the timeout when the component unmounts
+        return () => clearTimeout(timeout);
+    }, []);
+
 
     return (
         <div>

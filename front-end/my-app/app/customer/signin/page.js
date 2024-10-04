@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation';
 
 export default function SignIn() {
@@ -33,16 +33,13 @@ export default function SignIn() {
 
                  // Decode token to get expiration time
                  const decodedToken = jwt_decode(token);
-                 const expirationTime = decodedToken.exp * 1000; // Convert to milliseconds
-                 const currentTime = Date.now();
+                 const expirationTime = decodedToken.exp * 1000;  
+                 const timeout = expirationTime - Date.now();
 
-                  // Set a timeout to log out the user when the token expires
-                const timeoutDuration = expirationTime - currentTime;
-                if (timeoutDuration > 0) {
-                    setTimeout(() => {
-                        handleLogout();
-                    }, timeoutDuration);
-                }
+                setTimeout(() => {
+                    localStorage.removeItem("userAuthToken");
+                    router.push('/customer/signin');  
+                }, timeout);
                 
                 setSuccess('You signed in successfully!');
                 router.push('/customer/dashboard');
@@ -55,15 +52,8 @@ export default function SignIn() {
             setSuccess('');
         }
     }
-    const handleLogout = () => {
-        localStorage.removeItem("userAuthToken"); // Remove token from local storage
-        router.push('/'); // Redirect to home or login page
-    }
-
-    useEffect(() => {
-        // Clean up the timeout when the component unmounts
-        return () => clearTimeout(timeout);
-    }, []);
+    
+ 
 
 
     return (

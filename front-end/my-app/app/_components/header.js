@@ -2,17 +2,20 @@
 import { Heart, SearchIcon, ShoppingBasket, User2Icon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useEffect, useState } from 'react'
-
+import React, { useContext,useEffect, useState } from 'react'
+import { CartContext } from '../context/cartContext'
+import Cart from '../cart/page'
 export default function Header() {
+  const [showModal, setShowModal] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const { cartItems, addToCart } = useContext(CartContext)
   useEffect(() => {
     const token = localStorage.getItem('userAuthToken');
     console.log(token)
     if (token) {
       setIsLoggedIn(true)
     }
-    
+
   }, [isLoggedIn])
 
   const handleLogout = () => {
@@ -21,10 +24,16 @@ export default function Header() {
     setIsLoggedIn(false);
     router.push('/customer/signin'); // Redirect to sign-in page after logging out
   };
+
+  const toggle = () => {
+    setShowModal(!showModal)
+  }
   return (
+
     <div className='py-4 px-8 flex justify-between items-center border-b-2'>
+
       <div>
-        <Image src='/images/logo.jpg' width={70} height={60} alt='logo'/>
+        <Image src='/images/logo.jpg' width={70} height={60} alt='logo' />
       </div>
 
       <div className='flex items-center space-x-2'>
@@ -40,6 +49,12 @@ export default function Header() {
 
 
       </div>
+      {
+        !showModal && <button className='px-4 py-2 bg-gray-800 text-white text-xs font-bold uppercase rounded hover:bg-gray-700 focus:outline-none focus:bg-gray-700'
+          onClick={toggle}
+        >Cart ({cartItems.length})</button>
+      }
+       <Cart showModal={showModal} toggle={toggle} />
 
     </div>
   )

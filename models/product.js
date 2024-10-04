@@ -7,7 +7,8 @@ const productSchema = new mongoose.Schema({
     imgUrls:[{type:String}],
     category:{type:String},
     brand:{type:String},
-    countInStock:{type:Number, default:0}
+    countInStock:{type:Number, default:0},
+    quantity:{type:Number, default:0}
 })
 
   

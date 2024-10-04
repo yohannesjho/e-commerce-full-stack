@@ -1,81 +1,26 @@
-import PropTypes from 'prop-types'
-import { useContext } from 'react'
-import { CartContext } from '../context/cartContext'
+'use client';
+import { useCart } from '../context/cartContext';
 
-export default function Cart({ showModal, toggle }) {
+export default function CartPage() {
+  const { cartItems, removeFromCart, clearCart } = useCart();
 
-    const { cartItems, addToCart, removeFromCart, clearCart, getCartTotal } = useContext(CartContext)
+  if (cartItems.length === 0) {
+    return <p>Your cart is empty.</p>;
+  }
 
-
-    return (
-        showModal && (
-            <div className="flex-col flex items-center fixed inset-0 left-1/4 bg-white dark:bg-black gap-8  p-10  text-black dark:text-white font-normal uppercase text-sm">
-                <h1 className="text-2xl font-bold">Cart</h1>
-                <div className="absolute right-16 top-10">
-                    <button
-                        className="px-4 py-2 bg-gray-800 text-white text-xs font-bold uppercase rounded hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
-                        onClick={toggle}
-                    >
-                        Close
-                    </button>
-                </div>
-                <div className="flex flex-col gap-4">
-                    {console.log(cartItems)}
-
-                    {cartItems.map((item) => (
-                        <div className="flex justify-between items-center" key={item.id}>
-                            <div className="flex gap-4">
-                                
-                                <div className="flex flex-col">
-                                    <h1 className="text-lg font-bold">{item.name}</h1>
-                                    <p className="text-gray-600">{item.price}</p>
-                                </div>
-                            </div>
-                            <div className="flex gap-4">
-                                <button
-                                    className="px-4 py-2 bg-gray-800 text-white text-xs font-bold uppercase rounded hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
-                                    onClick={() => {
-                                        addToCart(item)
-                                    }}
-                                >
-                                    +
-                                </button>
-                                <p>{item.quantity}</p>
-                                <button
-                                    className="px-4 py-2 bg-gray-800 text-white text-xs font-bold uppercase rounded hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
-                                    onClick={() => {
-                                        removeFromCart(item)
-                                    }}
-                                >
-                                    -
-                                </button>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-                {
-                    cartItems.length > 0 ? (
-                        <div className="flex flex-col justify-between items-center">
-                            <h1 className="text-lg font-bold">Total: ${getCartTotal()}</h1>
-                            <button
-                                className="px-4 py-2 bg-gray-800 text-white text-xs font-bold uppercase rounded hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
-                                onClick={() => {
-                                    clearCart()
-                                }}
-                            >
-                                Clear cart
-                            </button>
-                        </div>
-                    ) : (
-                        <h1 className="text-lg font-bold">Your cart is empty</h1>
-                    )
-                }
-            </div>
-        )
-    )
-}
-
-Cart.propTypes = {
-    showModal: PropTypes.bool,
-    toggle: PropTypes.func
+  return (
+    <div>
+      <h1 className="text-2xl mb-4">Your Cart</h1>
+      {cartItems.map((item) => (
+        <div key={item.id} className="border-b p-4">
+          <h2>{item.name}</h2>
+          
+          <p>Price: ${item.price}</p>
+          <p>Quantity: {item.quantity}</p>
+          <button onClick={() => removeFromCart(item.id)} className="bg-red-500 px-2 py-1 text-white rounded-md">Remove</button>
+        </div>
+      ))}
+      <button onClick={clearCart} className="bg-blue-500 px-4 py-2 mt-4 rounded-md text-white">Clear Cart</button>
+    </div>
+  );
 }

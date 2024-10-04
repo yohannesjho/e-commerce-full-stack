@@ -1,75 +1,62 @@
-'use client'
-import { createContext, useState, useEffect } from 'react'
+// Cart context code with fixes
+'use client';
+import { createContext, useContext, useEffect, useState } from 'react';
 
-export const CartContext = createContext()
+// Create CartContext
+const CartContext = createContext();
 
+// CartProvider component to wrap around the app
 export const CartProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState(localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : [])
+  const [cartItems, setCartItems] = useState([]);
 
-  const addToCart = (item) => {
-   
-    const isItemInCart = cartItems.find((cartItem) => cartItem.id === item.id);
-
-    if (isItemInCart) {
-      setCartItems(
-        cartItems.map((cartItem) =>
-          cartItem.id === item.id
-            ? { ...cartItem, quantity: cartItem.quantity + 1 }
-            : cartItem
-        )
-      );
-    } else {
-      setCartItems([...cartItems, { ...item, quantity: 1 }]);
-    }
-    console.log(cartItems)
-  };
-
-  const removeFromCart = (item) => {
-    const isItemInCart = cartItems.find((cartItem) => cartItem.id === item.id);
-
-    if (isItemInCart.quantity === 1) {
-      setCartItems(cartItems.filter((cartItem) => cartItem.id !== item.id));
-    } else {
-      setCartItems(
-        cartItems.map((cartItem) =>
-          cartItem.id === item.id
-            ? { ...cartItem, quantity: cartItem.quantity - 1 }
-            : cartItem
-        )
-      );
-    }
-  };
-
-  const clearCart = () => {
-    setCartItems([]);
-  };
-
-  const getCartTotal = () => {
-    return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
-  };
-
+  // Retrieve cart from localStorage when the app loads
   useEffect(() => {
-    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+    const storedCartItems = localStorage.getItem('cartItems');
+    if (storedCartItems) {
+      setCartItems(JSON.parse(storedCartItems));
+    }
+  }, []); // This runs once when the component mounts
+
+  // Save cart items to localStorage whenever cartItems changes
+  useEffect(() => {
+    if (cartItems.length > 0) {
+      localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    }
   }, [cartItems]);
 
-  useEffect(() => {
-    const cartItems = localStorage.getItem("cartItems");
-    if (cartItems) {
-      setCartItems(JSON.parse(cartItems));
+  // Function to add an item to the cart
+  const addToCart = (product) => {
+    const itemExists = cartItems.find(item => item.id === product.id);
+    if (itemExists) {
+      // If the item already exists, increase its quantity
+      setCartItems(cartItems.map(item =>
+        item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+      ));
+    } else {
+      // If it's a new item, add it to the cart with a quantity of 1
+      setCartItems([...cartItems, { ...product, quantity: 1 }]);
     }
-  }, []);
+  };
+
+  // Function to remove an item from the cart
+  const removeFromCart = (id) => {
+    setCartItems(cartItems.filter(item => item.id !== id));
+  };
+
+  // Function to clear the cart
+  const clearCart = () => {
+    setCartItems([]);
+    localStorage.removeItem('cartItems');  // Clear localStorage when cart is cleared
+  };
 
   return (
-    <CartContext.Provider
-      value={{
-        cartItems,
-        addToCart,
-        removeFromCart,
-        clearCart,
-        getCartTotal,
-      }}
-    >
+    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, clearCart }}>
       {children}
     </CartContext.Provider>
   );
+};
+
+// Custom hook to use CartContext
+export const useCart = () => {
+  return useContext(CartContext);
 };

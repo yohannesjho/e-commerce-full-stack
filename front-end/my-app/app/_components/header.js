@@ -19,14 +19,14 @@ export default function Header() {
       setIsLoggedIn(true)
     }
 
-  }, [isLoggedIn])
+  }, [])
 
   const handleLogout = () => {
     // Remove the token and log the user out
     localStorage.removeItem('userAuthToken');
     setIsLoggedIn(false);
     localStorage.removeItem('cartItems')
-    router.push('/customer/signin'); // Redirect to sign-in page after logging out
+    router.push('/'); // Redirect to sign-in page after logging out
   };
 
 

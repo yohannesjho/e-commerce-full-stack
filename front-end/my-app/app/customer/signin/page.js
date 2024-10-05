@@ -1,6 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation';
+import { jwtDecode } from 'jwt-decode';
 
 export default function SignIn() {
     const router = useRouter();
@@ -11,7 +12,7 @@ export default function SignIn() {
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
-        console.log(formData);
+
     }
 
     const handleSubmission = async (e) => {
@@ -20,41 +21,51 @@ export default function SignIn() {
             const response = await fetch('http://localhost:5000/api/user/users/login', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',  
+                    'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(formData),
             });
 
             if (response.ok) {
                 const data = await response.json();
-                const token = data.token
-                console.log(token)
+                const token = data.token;
                 localStorage.setItem("userAuthToken", token);
 
-                 // Decode token to get expiration time
-                 const decodedToken = jwt_decode(token);
-                 const expirationTime = decodedToken.exp * 1000;  
-                 const timeout = expirationTime - Date.now();
+                try {
+                   
+                    const decodedToken = jwtDecode(token);      
+                    const expirationTime = decodedToken.exp * 1000;
+                    const timeout = expirationTime - Date.now();
 
-                setTimeout(() => {
+                    if (timeout > 0) {
+                        setTimeout(() => {
+                            localStorage.removeItem("userAuthToken");
+                            router.push('/customer/signin');
+                        }, timeout);
+                    } else {
+                        localStorage.removeItem("userAuthToken");
+                        router.push('/customer/signin');  
+                    }
+
+                    setSuccess('You signed in successfully!');
+                    router.push('/customer/dashboard');
+
+
+                } catch (err) {
+                    console.error('Error decoding token:', err);
+                    setError('Token error, please log in again.');
                     localStorage.removeItem("userAuthToken");
-                    router.push('/customer/signin');  
-                }, timeout);
-                
-                setSuccess('You signed in successfully!');
-                router.push('/customer/dashboard');
-
-                 
+                    router.push('/customer/signin');
+                }
+            } else {
+                setError('Invalid credentials. Please try again.');
             }
         } catch (error) {
-            console.log(error);
-            setError('Invalid credentials. Please try again.'); 
+            console.error('Error:', error);
+            setError('Something went wrong. Please try again.');
             setSuccess('');
         }
     }
-    
- 
-
 
     return (
         <div>

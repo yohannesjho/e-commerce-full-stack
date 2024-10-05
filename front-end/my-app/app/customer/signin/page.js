@@ -48,7 +48,7 @@ export default function SignIn() {
                     }
 
                     setSuccess('You signed in successfully!');
-                    router.push('/customer/dashboard');
+                    router.push('/');
 
 
                 } catch (err) {

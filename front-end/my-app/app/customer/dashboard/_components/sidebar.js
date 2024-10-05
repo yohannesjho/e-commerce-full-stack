@@ -1,15 +1,34 @@
 import Link from 'next/link'
-import React from 'react'
+import React, { useState } from 'react'
+import { useRouter } from 'next/navigation';
 
 export default function Sidebar() {
+    const [clicked, setClicked] = useState(false)
+    const router = useRouter();
+
+
+    const handleLogout = () => {
+        localStorage.removeItem('userAuthToken');
+        localStorage.removeItem('cartItems');
+        router.push('/');  
+      };
+     
+
     return (
-        <div className="w-64 bg-gray-800 text-white  ">
+        <div className="w-64 bg-gray-800 text-white hidden md:block ">
             <div className="p-4 text-xl font-semi-bold">Customer Dashboard</div>
             <ul>
-                <Link href="/" className=" block p-4 hover:bg-gray-700 cursor-pointer">Home</Link>
-                <Link href="/customer/orders" className=" block p-4 hover:bg-gray-700 cursor-pointer">Orders</Link>
-                <Link href='/customer/profile' className=" block p-4 hover:bg-gray-700 cursor-pointer">Profile</Link>
-                <Link href='' className=" block p-4 hover:bg-gray-700 cursor-pointer">Settings</Link>
+                <Link href="/" className=" block p-4 hover:bg-gray-700 cursor-pointer duration-300">Home</Link>
+                <Link href="/customer/orders" className=" block p-4 hover:bg-gray-700 cursor-pointer duration-300">Orders</Link>
+                <Link href='/customer/profile' className=" block p-4 hover:bg-gray-700 cursor-pointer duration-300">Profile</Link>
+                <Link onClick={() => setClicked(!clicked)} href='' className=" block p-4 hover:bg-gray-700 cursor-pointer duration-300">Settings</Link>
+                <button
+                    onClick={handleLogout}
+                    className={`${clicked ? 'block' : 'hidden'}  ml-12 hover:bg-red-300 w-1/2 hover:text-black duration-300 px-2 py-1 rounded-lg`}
+
+                >
+                    Logout
+                </button>
             </ul>
         </div>
     )

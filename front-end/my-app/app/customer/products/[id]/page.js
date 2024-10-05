@@ -30,7 +30,7 @@ export default function ProductDetail({ params }) {
     const handleAddToCart = (product) => {
         addToCart({
             id: product._id,  // Ensure the unique _id from your backend is used
-            name: product.name,
+            name:  product.name,
             price: product.price,
             image: product.image || '/images/logo.jpg', // Default image if not provided
         });

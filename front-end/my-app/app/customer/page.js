@@ -3,17 +3,20 @@ import Image from "next/image";
 import Link from "next/link";
 import { useContext, useEffect, useState } from 'react'
 import { CartContext } from '../context/cartContext'
+import { SearchIcon } from "lucide-react";
 
-export default function Home( ) {
+export default function Home() {
   const [products, setProducts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedBrand, setSelectedBrand] = useState('');
+  const [searchInput, setSearchInput] = useState('')
 
   const fetchProducts = async () => {
     try {
       const categoryQuery = selectedCategory ? `category=${selectedCategory}` : '';
       const brandQuery = selectedBrand ? `brand=${selectedBrand}` : '';
-      const query = [categoryQuery, brandQuery].filter(Boolean).join('&');
+      const searchQuery = searchInput ? `search=${searchInput}`:''
+      const query = [categoryQuery, brandQuery, searchQuery].filter(Boolean).join('&');
 
       const url = query ? `http://localhost:5000/api/user/products?${query}` : 'http://localhost:5000/api/user/products'
 
@@ -27,11 +30,22 @@ export default function Home( ) {
 
   useEffect(() => {
     fetchProducts();
-  }, [selectedCategory, selectedBrand]);
+  }, [selectedCategory, selectedBrand,searchInput]);
 
- 
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setSearchInput(value);
+  
+  };
   return (
     <div className="px-8">
+      <div className="flex justify-center">
+        <div className='flex justify-center  space-x-2 my-8  w-8 sm:w-16 md:w-48 lg:w-72'>
+          <input onChange={(e) => handleInputChange(e)} value={searchInput} className='border-2 w-96 outline-none rounded-md focus:border-gray-700' />
+          <SearchIcon className='cursor-pointer' />
+        </div>
+
+      </div>
       <h1 className="text-2xl font-bold">Products</h1>
       <div className="my-4 flex space-x-2">
         <button className="bg-green-500 hover:bg-green-300 px-2 py-1 rounded-md duration-300 hover:text-white" onClick={() => setSelectedCategory('women')}  >Women</button>
@@ -59,7 +73,7 @@ export default function Home( ) {
           </Link>
         ))}
       </div>
- 
+
 
     </div>
   )

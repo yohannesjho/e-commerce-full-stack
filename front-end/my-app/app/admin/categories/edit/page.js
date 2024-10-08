@@ -37,7 +37,7 @@ export default function page() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const token = localStorage.getItem('authToken')
+        const token = localStorage.getItem('adminToken')
         try {
             const data = new FormData();
             data.append('id', categoryData.id);

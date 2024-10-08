@@ -7,7 +7,7 @@ export default function CategoryList() {
 
     useEffect(() => {
         const fetchCategories = async () => {
-            const token = localStorage.getItem('authToken')
+            const token = localStorage.getItem('adminToken')
             console.log(token)
             if (token) {
                 try {
@@ -31,7 +31,7 @@ export default function CategoryList() {
     }, [])
 
     const handleDelete = async (id) => {
-        const token = localStorage.getItem('authToken')
+        const token = localStorage.getItem('adminToken')
         try {
             const response = await fetch(`http://localhost:5000/api/admin/category/${id}`, {
                 method: 'DELETE',

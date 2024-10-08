@@ -37,7 +37,7 @@ export default function Page() {
         data.append('images', file);
       });
 
-      const token = localStorage.getItem('authToken');  
+      const token = localStorage.getItem('adminToken');  
 
       const response = await fetch('http://localhost:5000/api/admin/category/create', {
         method: 'POST',

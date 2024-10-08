@@ -30,7 +30,7 @@ export default function SignIn() {
                 const data = await response.json();
                 const token = data.token;
                 localStorage.setItem("userAuthToken", token);
-
+                console.log(token)
                 try {
                    
                     const decodedToken = jwtDecode(token);      

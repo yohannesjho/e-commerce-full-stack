@@ -48,7 +48,7 @@ export default function Edit() {
 
   const handleSubmission = async (e)=>{
     e.preventDefault()
-    const token = localStorage.getItem('authToken')
+    const token = localStorage.getItem('adminToken')
     const formData = new FormData();
     formData.append('id', product.id);
     formData.append('name', product.name);
@@ -71,7 +71,7 @@ export default function Edit() {
       });
       if(response.ok){
         const data = await response.json();
-      console.log(data);
+       
       setSuccess('Product updated successfully');
       }
     } catch (error) {

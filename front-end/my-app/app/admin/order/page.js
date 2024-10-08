@@ -6,7 +6,7 @@ export default function Order() {
 
     useEffect(() => {
         const fetchOrders = async () => {
-            const token = localStorage.getItem('authToken')
+            const token = localStorage.getItem('adminToken')
             console.log(token)
             if (token) {
                 try {

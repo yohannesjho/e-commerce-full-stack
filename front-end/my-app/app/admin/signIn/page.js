@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 
 export default function SignIn() {
   const router = useRouter();
-  const [formData, setFormData] = useState({ email: '', password: '' }); // Initialize state
+  const [formData, setFormData] = useState({ email: '', password: '' });  
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
 
@@ -22,22 +22,22 @@ export default function SignIn() {
     try {
       const response = await axios.post('http://localhost:5000/api/admin/signin', formData, {
         headers: {
-          "Content-Type": "application/json" // Specify content type as JSON
+          "Content-Type": "application/json"  
         }
       });
 
       if (response.data) {
-        const token = response.data.token; // Access the token property correctly
-        localStorage.setItem("authToken", token);
-        console.log("Token:", localStorage.getItem("authToken"));
+        const token = response.data.token;  
+        localStorage.setItem("adminToken", token);
+        
 
         setSuccess('You signed in successfully!');
         router.push('/admin');
-        console.log(response);
+         
       }
     } catch (error) {
       console.log(error);
-      setError('Invalid credentials. Please try again.'); // Generalize error message
+      setError('Invalid credentials. Please try again.');  
       setSuccess('');
     }
   }
@@ -53,7 +53,7 @@ export default function SignIn() {
             onChange={handleInputChange} 
             className='border-2 ml-2 border-gray-600 rounded-md outline-none' 
             name='email' 
-            value={formData.email} // Corrected to formData
+            value={formData.email}  
           />
         </div>
         <div className='w-1/2 mx-auto my-4'>
@@ -62,8 +62,8 @@ export default function SignIn() {
             onChange={handleInputChange} 
             className='border-2 ml-2 border-gray-600 rounded-md outline-none' 
             name='password' 
-            type='password' // Added type for password field
-            value={formData.password} // Corrected to formData
+            type='password'  
+            value={formData.password}  
           />
         </div>
         <div className='w-1/2 mx-auto my-4'>

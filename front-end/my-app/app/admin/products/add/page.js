@@ -20,7 +20,7 @@ export default function page() {
   const handleOnSubmit = async (e) => {
     e.preventDefault();
     const formDataToSend = new FormData();
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem('adminToken');
 
     formDataToSend.append('name', formData.name);
     formDataToSend.append('description', formData.description);

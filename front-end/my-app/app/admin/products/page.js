@@ -8,7 +8,7 @@ export default function page() {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const token = localStorage.getItem('authToken')
+      const token = localStorage.getItem('adminToken')
       
      
       if (token) {
@@ -39,7 +39,7 @@ export default function page() {
   }, []);
 
   const handleDelete = async (id) => {
-    const token = localStorage.getItem('authToken')
+    const token = localStorage.getItem('adminToken')
     try {
         const response = await fetch(`http://localhost:5000/api/admin/product/${id}`, {
             method: 'DELETE',

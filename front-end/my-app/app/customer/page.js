@@ -23,6 +23,7 @@ export default function Home() {
       const response = await fetch(url);
       const data = await response.json();
       setProducts(data);
+      console.log(products)
     } catch (error) {
       console.error('Error fetching products:', error);
     }
@@ -65,7 +66,7 @@ export default function Home() {
       <div className="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {products.map((product) => (
           <Link href={`/customer/products/${product._id}`} key={product._id} className="bg-white p-4 shadow-md">
-            <Image src='/images/logo.jpg' width={300} height={50} alt="product image" />
+            <img src={product.imgUrls[0]} width={300} height={50} alt="product image" />
             <h2 className="font-bold">{product.name}</h2>
             <p>${product.price}</p>
             <p>Category: {product.category}</p>

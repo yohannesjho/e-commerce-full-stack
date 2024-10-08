@@ -62,8 +62,6 @@ export default function page() {
         <div className='flex justify-between items-center px-2 h-16'>
           <p>Product List</p>
           <div className='flex gap-4'>
-            <p className='border px-4 py-1 rounded-md flex items-center gap-1'><FilterIcon size={15} /> Filter</p>
-            <p className='border px-4 py-1 rounded-md'>See all</p>
             <Link href="/admin/products/add" className='border px-4 py-1 rounded-md bg-purple-600 flex items-center gap-1'><PlusIcon size={15} /> Add Product</Link>
           </div>
         </div>

@@ -32,14 +32,14 @@ export default function ProductDetail({ params }) {
             id: product._id,  // Ensure the unique _id from your backend is used
             name:  product.name,
             price: product.price,
-            image: product.image || '/images/logo.jpg', // Default image if not provided
+            image: product.imgUrls 
         });
     };
 
     return (
         <div className="p-8 flex justify-between">
             <div>
-                <Image src={product.image || '/images/logo.jpg'} width={400} height={400} alt="product image" />
+                <img src={product.imgUrls} width={400} height={400} alt="product image" />
             </div>
             <div className="border-2 w-96 shadow-md rounded-lg p-8">
                 <h1 className="text-2xl font-semi-bold mb-4 uppercase">{product.name}</h1>

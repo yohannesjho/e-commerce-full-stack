@@ -1,10 +1,10 @@
 const jwt = require('jsonwebtoken');
 
 const authenticateAdmin = (req, res, next) => {
-  const authHeader = req.header('Authorization');
+ 
+ const authHeader = req.header('Authorization');
 
-  console.log('Authorization header:', authHeader);
-
+  
   if (!authHeader) {
     return res.status(401).json({ message: 'Authorization header is missing' });
   }

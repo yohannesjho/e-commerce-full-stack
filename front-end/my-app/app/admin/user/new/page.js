@@ -19,12 +19,14 @@ export default function New() {
 
     const handleSubmission = async (e)=>{
         e.preventDefault()
+        const token = localStorage.getItem('authToken')
         try {
             const response = await fetch('http://localhost:5000/api/admin/register',{
                 method:'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                },
+                    'Authorization': `Bearer ${token}`,  
+                    'Content-Type': 'application/json'  
+                  },
                 body: JSON.stringify(formData)
             })
             if (response.ok) {

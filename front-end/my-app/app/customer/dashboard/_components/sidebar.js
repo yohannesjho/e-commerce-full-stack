@@ -10,7 +10,7 @@ export default function Sidebar() {
     const handleLogout = () => {
         localStorage.removeItem('userAuthToken');
         localStorage.removeItem('cartItems');
-        router.push('/');  
+        router.push('/customer');  
       };
      
 
@@ -24,7 +24,7 @@ export default function Sidebar() {
                 <Link onClick={() => setClicked(!clicked)} href='' className=" block p-4 hover:bg-gray-700 cursor-pointer duration-300">Settings</Link>
                 <button
                     onClick={handleLogout}
-                    className={`${clicked ? 'block' : 'hidden'}  ml-12 hover:bg-red-300 w-1/2 hover:text-black duration-300 px-2 py-1 rounded-lg`}
+                    className={`${clicked ? 'block' : 'hidden'}  ml-12`}
 
                 >
                     Logout

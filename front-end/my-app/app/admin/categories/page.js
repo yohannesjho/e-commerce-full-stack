@@ -31,9 +31,13 @@ export default function CategoryList() {
     }, [])
 
     const handleDelete = async (id) => {
+        const token = localStorage.getItem('authToken')
         try {
             const response = await fetch(`http://localhost:5000/api/admin/category/${id}`, {
-                method: 'DELETE'
+                method: 'DELETE',
+                headers: { 
+                    'Authorization': `Bearer ${token}`
+                  }
             });
             if (!response.ok) {
                 throw new Error('Failed to delete the order');
@@ -62,7 +66,7 @@ export default function CategoryList() {
                         <tr>
                             <td>{category.name}</td>
                             <td>{category.description}</td>
-                            <td className=''><img className='border w-28 h-16' src={category.img[0]}></img></td>
+                            <td className=''><img className='border w-28 h-16' src={category.imgUrls[0]}></img></td>
                             <td><Link href={{
                                 pathname: "categories/edit",
                                 query: {

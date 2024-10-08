@@ -1,23 +1,23 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation';
-import axios from 'axios'
+ 
 
 export default function page() {
     const searchParams = useSearchParams();
 
     const [categoryData, setCategoryData] = useState({ id: "", name: "", description: "", img: [] });
     const [success, setSuccess] = useState("");
-    const [error, setError] = useState([]);
+    const [error, setError] = useState('');
 
     useEffect(() => {
         const id = searchParams.get('id');
         const name = searchParams.get('name');
         const description = searchParams.get('description');
-        const img = searchParams.get('img');
+        
 
-        if (id && name && description && img) {
-            setCategoryData({ id, name, description, img });
+        if (id && name && description ) {
+            setCategoryData({ id, name, description });
         }
     }, [searchParams]);
 
@@ -26,17 +26,18 @@ export default function page() {
         const { name, value } = e.target;
         
         setCategoryData({ ...categoryData, [name]: value });
+        console.log(categoryData)
     };
 
     const handleFileChange = (e) => {
-      
         const files = Array.from(e.target.files);
-         
         setCategoryData({ ...categoryData, img: files });
+        console.log(categoryData)
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const token = localStorage.getItem('authToken')
         try {
             const data = new FormData();
             data.append('id', categoryData.id);
@@ -44,24 +45,27 @@ export default function page() {
             data.append('description', categoryData.description);
            
 
-            // Append each image file
-            categoryData.img.forEach((file) => {
+            
+            categoryData.img.forEach((file,index) => {
                 data.append('images', file);
             });
            
-            // Make the API call to update the category
-            const response = await axios.put(`http://localhost:5000/api/user/categories/update/${categoryData.id}`, data, {
-                headers: {
-                    "Content-Type": "multipart/form-data"
-                }
+             
+            const response = await fetch(`http://localhost:5000/api/admin/category/${categoryData.id}`, {
+                method: 'PUT',
+                headers: { 
+                  'Authorization': `Bearer ${token}`
+                },
+                body: data
             });
-            console.log(response)
+             
             if (response.data) {
                 setSuccess("Category edited successfully!");
+                setError('')
             }
         } catch (error) {
-            console.log(error);
             setError(`something went wrong`);
+            setSuccess('')
         }
     };
 

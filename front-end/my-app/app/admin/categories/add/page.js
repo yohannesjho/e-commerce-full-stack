@@ -1,9 +1,7 @@
 'use client'
 import React, { useState } from 'react'
-import axios from 'axios';
 
-
-export default function page() {
+export default function Page() {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -21,7 +19,7 @@ export default function page() {
   };
 
   const handleFileChange = (e) => {
-    const files = Array.from(e.target.files); // Convert FileList to array
+    const files = Array.from(e.target.files);  
     setFormData({
       ...formData,
       img: files,
@@ -31,37 +29,38 @@ export default function page() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-       
       const data = new FormData();
       data.append('name', formData.name);
       data.append('description', formData.description);
 
-      formData.img.forEach((file,index) => {
-        data.append("images",file)
+      formData.img.forEach((file, index) => {
+        data.append('images', file);
       });
-      
-      console.log(data)
-      const token = localStorage.getItem('')
 
-      // Make API request to the backend
-      const response = await axios.post('http://localhost:5000/api/user/categories/create', data, {
+      const token = localStorage.getItem('authToken');  
+
+      const response = await fetch('http://localhost:5000/api/admin/category/create', {
+        method: 'POST',
         headers: {
-          'Content-Type': 'multipart/form-data',
-          'Authorization':`Bearer ${token}`
+          'Authorization': `Bearer ${token}`,  
         },
-        headers:{
-          'Authorization':`Bearer ${token}`
-        }
+        body: data  
       });
 
-      if (response.data) {
+      if (response.ok) {
+        const result = await response.json();
         setSuccess('Category created successfully!');
+         
+      } else {
+        const errorMessage = await response.text();
+        setError(`Error: ${errorMessage}`);
       }
     } catch (error) {
       console.log('Error creating category', error);
-      setError(` ${error}`);
+      setError(`Error: ${error.message}`);
     }
   };
+
   return (
     <div className="max-w-lg mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Create Category</h1>
@@ -104,7 +103,6 @@ export default function page() {
             name="img"
             multiple
             onChange={handleFileChange}
-            
             className="w-full p-2 border rounded"
             required
           />
@@ -118,5 +116,5 @@ export default function page() {
         </button>
       </form>
     </div>
-  )
+  );
 }

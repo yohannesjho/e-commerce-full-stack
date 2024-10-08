@@ -24,7 +24,7 @@ export default function Edit() {
        const description = searchParams.get('description')
        const price = parseFloat(searchParams.get('price'));
        const countInStock = parseInt(searchParams.get('countInStock'));
-       console.log(name)
+       
        if (name && category && description && price && countInStock) {
         setProduct({ name, category, description, price, countInStock, id });
       }
@@ -48,6 +48,7 @@ export default function Edit() {
 
   const handleSubmission = async (e)=>{
     e.preventDefault()
+    const token = localStorage.getItem('authToken')
     const formData = new FormData();
     formData.append('id', product.id);
     formData.append('name', product.name);
@@ -59,10 +60,13 @@ export default function Edit() {
     product.imgUrls.forEach((file, index) => {
       formData.append('imgUrls',file);
     });
-    console.log(formData)
+     
     try {
       const response = await fetch(`http://localhost:5000/api/admin/product/${product.id}`, {
         method: 'PUT',
+        headers: { 
+          'Authorization': `Bearer ${token}`
+        },
         body: formData
       });
       if(response.ok){

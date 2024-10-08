@@ -9,7 +9,7 @@ export default function page() {
   useEffect(() => {
     const fetchProducts = async () => {
       const token = localStorage.getItem('authToken')
-      console.log(token)
+      
      
       if (token) {
         try {
@@ -39,9 +39,13 @@ export default function page() {
   }, []);
 
   const handleDelete = async (id) => {
+    const token = localStorage.getItem('authToken')
     try {
         const response = await fetch(`http://localhost:5000/api/admin/product/${id}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: { 
+              'Authorization': `Bearer ${token}`
+            }
         });
         if (!response.ok) {
             throw new Error('Failed to delete the order');
@@ -71,6 +75,7 @@ export default function page() {
             <th>Category</th>
             <th>Price</th>
             <th>Stock</th>
+            <th>Product Image</th>
             <th>Action</th>
           </tr>
 
@@ -82,6 +87,7 @@ export default function page() {
               <td>{product.category}</td>
               <td>{product.price}</td>
               <td>{product.countInStock}</td>
+              <td><img className='border w-28 h-16' src={product.imgUrls[0]}></img></td>
               <td><Link href={{
                 pathname:'/admin/products/edit',
                 query:{

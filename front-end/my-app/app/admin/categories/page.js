@@ -50,7 +50,7 @@ export default function CategoryList() {
         }
     };
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense  >
         <div>
             <table className='border w-full text-left m-8'>
                 <thead>

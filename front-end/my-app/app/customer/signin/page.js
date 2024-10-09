@@ -32,7 +32,7 @@ export default function SignIn() {
                 localStorage.setItem("userAuthToken", token);
                 console.log(token)
                 try {
-                   
+        
                     const decodedToken = jwtDecode(token);      
                     const expirationTime = decodedToken.exp * 1000;
                     const timeout = expirationTime - Date.now();
@@ -48,7 +48,7 @@ export default function SignIn() {
                     }
 
                     setSuccess('You signed in successfully!');
-                    router.push('/');
+                    router.push('/customer');
 
 
                 } catch (err) {

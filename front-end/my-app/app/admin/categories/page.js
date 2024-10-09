@@ -12,7 +12,7 @@ export default function CategoryList() {
             console.log(token)
             if (token) {
                 try {
-                    const response = await fetch('http://localhost:5000/api/admin/categories/', {
+                    const response = await fetch('https://e-commerce-api-zeta-neon.vercel.app/api/admin/categories/', {
                         method: 'GET',
                         headers: {
                           'Authorization': `Bearer ${token}`   
@@ -34,7 +34,7 @@ export default function CategoryList() {
     const handleDelete = async (id) => {
         const token = localStorage.getItem('adminToken')
         try {
-            const response = await fetch(`http://localhost:5000/api/admin/category/${id}`, {
+            const response = await fetch(`https://e-commerce-api-zeta-neon.vercel.app/admin/category/${id}`, {
                 method: 'DELETE',
                 headers: { 
                     'Authorization': `Bearer ${token}`

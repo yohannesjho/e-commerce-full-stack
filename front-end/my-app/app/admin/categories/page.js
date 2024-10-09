@@ -1,4 +1,5 @@
 'use client'
+import { Suspense } from 'react';
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 
@@ -49,6 +50,7 @@ export default function CategoryList() {
         }
     };
     return (
+        <Suspense fallback={<div>Loading...</div>}>
         <div>
             <table className='border w-full text-left m-8'>
                 <thead>
@@ -80,5 +82,6 @@ export default function CategoryList() {
                     ))}
                 </tbody>
             </table></div>
+              </Suspense>
     )
 }

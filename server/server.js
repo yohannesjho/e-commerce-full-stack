@@ -17,7 +17,8 @@ const app = express()
 
 app.use(cors(
     {
-        origin: 'http://localhost:3000',  
+        origin: 'e-commerce-front-end-flax.vercel.app
+',  
         methods: 'GET,POST,PUT,DELETE',
         credentials: true
     }

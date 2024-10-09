@@ -1,5 +1,5 @@
 'use client'
-import { Suspense } from 'react';
+import { Suspense } from 'react'
 import React, { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation';
 
@@ -71,7 +71,7 @@ export default function page() {
     };
 
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense>
             <div>
                 {error && <p className="text-red-500">{error}</p>}
                 {success && <p className="text-green-500">{success}</p>}

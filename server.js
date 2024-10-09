@@ -15,7 +15,13 @@ dotenv.config()
 
 const app = express()
 
-app.use(cors());
+app.use(cors(
+    {
+        origin:[''],
+        methods:["POST",'GET'],
+        credentials:true
+    }
+));
 app.use(express.json())
 
 app.use('/api/user/products', productRoutes)
